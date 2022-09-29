@@ -15,6 +15,31 @@ const User = () => {
   //User repos
   const [repos, setRepos] = useState([]);
 
+
+  const [currentpage, setCurrentPage] = useState(0)
+  const [activepage, setActivetPage] = useState(0)
+  const [perPage] = useState(10);
+  const [offset, setOffset] = useState(0);
+  const pageNumbers = [];
+
+
+  for (let i = 0; i<Math.ceil(repos.length)/perPage; i++){
+    pageNumbers.push(i)
+}
+
+const handleChange = (e, pageno) => {
+    //console.log("test")
+    //console.log("pageno"+pageno)
+    setCurrentPage(Math.ceil(repos.length/perPage));
+    const selectedPage = pageno;
+    setActivetPage(pageno);
+    setOffset(selectedPage*perPage);
+
+
+}
+
+const slice = repos.slice(offset, offset + perPage)
+
   useEffect(() => {
     const fetchUserInformation = async () => {
       try {
@@ -66,13 +91,24 @@ const User = () => {
           </div>
         </div>
       </div>
+      
       <div className="user-repos">
+        <div className="pagination">
+         
+            {/* <button onClick={handlePrevPage}>{page}</button>
+            <button onClick={handleNextPage}>{page + 1}</button> */}
+            {pageNumbers.map(page => (  
+                    <button onClick={(event) => handleChange(event,page)}><span key={page} className={(page)==(activepage) ? 'page-link active' : 'page-link' }>  
+                      {page+1}</span>
+                      </button>
+              ))} 
+          </div>
         {repos ? (
-          repos.map((repo) => {
+          slice.map((repo) => {
             return <Repo repo={repo} key={repo.id} />;
           })
         ) : (
-          <h2>No repos for this user...</h2>
+          <h3>repos not found...</h3>
         )}
       </div>
     </div>

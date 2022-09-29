@@ -8,7 +8,7 @@ const Repo = ({ repo }) => {
         <a href={html_url}>{name}</a>
       </h3>
       <p>{description}</p>
-      {language && <small>Written in {language}</small>}
+      {language && <h5> {language}</h5>}
     </div>
   );
 };
